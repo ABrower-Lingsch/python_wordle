@@ -1,6 +1,7 @@
 import random
 import sys
-from termcolor import colored
+from colorama import Fore, Back, init
+init(autoreset=True)
 
 def print_menu():
     print("Let's play Wordle!")
@@ -11,11 +12,21 @@ def read_random_word():
         words = f.read().splitlines()
         return random.choice(words)
 
+print_menu()
 word = read_random_word()
+
 
 for attempt in range(1, 7):
     guess = input().lower()
 
     for i in range( min(len(guess), 5)):
         if guess[i] == word[i]:
-            print(colored(guess[i], 'green'), end="")
+            print(Back.GREEN + guess[i], end="")
+        elif guess[i] in word:
+            print(Back.YELLOW + guess[i], end="")
+        else:
+            print(guess[i], end="")
+
+    if guess == word:
+        print(Fore.BLUE + "You guessed the word in ", attempt, "tries!")
+        break
